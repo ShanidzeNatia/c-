@@ -1,0 +1,160 @@
+namespace G12UserManagement
+{
+    class Program
+    {
+        static void Main()
+        {
+            Console.WriteLine(UserManager.Login("nika1998", "12312300")); //false
+            User user1 = new User();
+            user1.Username = "nika1998";
+            user1.Password = "12312300";
+            Console.WriteLine(UserManager.Register(user1)); //0
+            Console.WriteLine(UserManager.Register(user1)); //2
+            User user2 = new User() { Username = "Nino9796", Password = "97961234" };
+            Console.WriteLine(UserManager.Register(user2)); //0
+            Console.WriteLine(UserManager.Login("nika1998", "12312300")); //true
+            Console.WriteLine(UserManager.Login("nika1998", "12312301")); //false
+            Console.WriteLine(UserManager.UnRegister("nikusha1998")); //false
+            Console.WriteLine(UserManager.UnRegister("nika1998")); //true
+            Console.WriteLine(UserManager.Login("nika1998", "12312300")); //false        }
+        }
+    }
+
+    // davadot dacva, rom Username-ze da parolze ar sheizlebodes null-is an
+    // 8 simboloze ufro naklebi mnishvnelobis minicheba.
+    class User
+    {
+        private string? _username;
+        private string? _password;
+
+        public User()  { }
+
+        public User(string username, string password)
+        {
+            Username = username;
+            Password = password;
+        }
+
+        public string? Username
+        {
+            get => _username;
+            set => _username = ValidateInput(value, "Username");
+        }
+
+        public string? Password
+        {
+            get => _password;
+            set => _password = ValidateInput(value, "Password");
+        }
+
+        private string ValidateInput(string value, string fieldName)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new Exception($"{fieldName} cannot be null or empty!");
+            }
+
+            if (value.Length < 8)
+            {
+                throw new Exception($"{fieldName} must be more than 8 characters long!");
+            }
+
+            return value;
+        }
+    }
+
+    static class UserManager
+    {
+        public static User?[] _users = new User?[10];
+
+        public static int Register(User user)
+        {
+            /* funqciam unda modzebnos _users masivshi pirveli tavisufali elementi (anu elementi
+* romlis mnishvnelobac null-is tolia) da mianichos mas gadmocemuli useris obieqti (parametri user).
+* oghond, unda gaitvaliswinos shemdegi pirobebi:
+* 1. gadmocemul parametrshi rom ar iyos null-i da uechveli unda iyos username da paroli.
+*    tu parametrebi araa mowodebuli, shewyvitos registracia da daabrunos 1.
+* 2. gadaamowmos rom username unikaluri iyos, anu tu romelime elements gaachnia igive saxelis username
+*    shewyvitos registracia da daabrunos 2.
+* 3. tu masivshi agharaa carieli elementebi (anu sheivso 10ive), mashin daabrunos 3.
+* tu arcerti zeda shemtxveva ar moxda daaregistriros momxmarebeli (mianichos masivis elements)
+* da daabrunos 0.
+* 
+* 
+*/
+            if (user.Username == null || user.Password == null) return 1;
+            if (FindUser(user.Username) != null) return 2;
+            if (EmptyObject() != null) return 3;
+
+            //Console.WriteLine($"-- user -- {user.Username}");
+
+            if (EmptyUser())
+            {
+                _users[0] = user;
+            }
+
+            return 0;
+        }
+
+        public static bool EmptyUser()
+        {
+            return (!_users.Any() ? false : true);
+        }
+
+        public static User? EmptyObject()
+        {
+            for (int i = 0; i < _users.Length; i++)
+            {
+                if (_users[i]?.Username == null && _users[i]?.Password == null)
+                {
+                    return _users[i];
+                }
+            }
+            return null;
+        }
+
+        public static bool Login(string username, string password)
+        {
+            /* funqciam unda modzebnos arsebobs tu ara _users masivshi chanaweri (elementi),
+* romelsac gaachnia igive Username da Paroli rac gadmogvces parametrebshi.
+* tu aseti chanaweri ipova daabrunos true, winaaghmdeg shemtxvevashi false. */
+
+            return (FindUser(username, password) != null ? true : false);
+        }
+
+        public static bool UnRegister(string username)
+        {
+            /*  funqciam unda modzebnos arsebobs tu ara _users masivshi chanaweri (elementi),
+* romelsac gaachnia igive Username rac gadmogvces parametrshi.
+* tu aseti chanaweri ipova masivis elementze mianichos null (rashic vgulisxmobt washlas)
+* da daabrunos true, winaaghmdeg shemtxvevashi false.*/
+            var user = FindUser(username);
+            if (user != null)
+            {
+                user.Username = null;
+                user.Password = null;
+                return true;
+            }
+            return false;
+        }
+
+        public static User? FindUser(string username, string password = "")
+        {
+            //Console.WriteLine(_users[0]);
+            if (!_users.Any())
+            {
+                for (int i = 0; i < _users.Length; i++)
+                {
+                    //Console.WriteLine(_users[i].Username);
+                    if (_users[i].Username == username && _users[i].Password == password)
+                    {
+                        return _users[i];
+                    }
+                }
+                return null;
+            }
+
+            return null;
+        }
+    }
+}
