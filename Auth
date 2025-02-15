@@ -43,12 +43,12 @@ namespace G12UserManagement
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new Exception($"{fieldName} cannot be null or empty!");
+                throw new ArgumentNullException(nameof(value), $"{fieldName} cannot be null or empty!");
             }
 
             if (value.Length < 8)
             {
-                throw new Exception($"{fieldName} must be at least 8 characters long!");
+                throw new ArgumentException($"{fieldName} must be at least 8 characters long!", nameof(value));
             }
 
             return value;
