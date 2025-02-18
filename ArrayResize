@@ -1,0 +1,10 @@
+static void MyArrayResize(ref int[] array, int newSize)
+        {
+            //ToDo: Test this for size decrease.
+            int[] newArray = new int[newSize];
+            for (int i = 0; i < array.Length; i++)
+            {
+                newArray[i] = array[i];
+            }
+            array = newArray;
+        }
