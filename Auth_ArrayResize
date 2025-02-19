@@ -14,7 +14,9 @@ namespace G12UserManagement
             Console.WriteLine(UserManager.Register(user1)); //2
             //User user2 = new User() { Username = "Nino9796", Password = "97961234" };
             User user2 = new User("Nino9796", "97961234");
+            User user3 = new User("Nino9296", "97961234");
             Console.WriteLine(UserManager.Register(user2)); //0
+            Console.WriteLine(UserManager.Register(user3)); //0
             Console.WriteLine(UserManager.Login("nika1998", "12312300")); //true
             Console.WriteLine(UserManager.Login("nika1998", "12312301")); //false
             Console.WriteLine(UserManager.UnRegister("nikusha1998")); //false
@@ -65,20 +67,26 @@ namespace G12UserManagement
             // თუ მასივი შეივსო დაამატოს ახალი ელემენტი და მაინც დაარეგისტრიროს.
             if (emptyIndex == -1)
             {
-                int newSize = _users.Length + 1;
-                User?[] newUsersArray = new User?[newSize];
-                for (int i = 0; i < _users.Length; i++)
-                {
-                    newUsersArray[i] = _users[i];
-                }
-
-                _users = newUsersArray;
-
-                emptyIndex = _users.Length - 1;
+                emptyIndex = GetArrayNewsize();
             }
 
             _users[emptyIndex] = user;
             return 0;
+        }
+
+        public static int GetArrayNewsize()
+        {
+            int newSize = _users.Length + 1;
+            User?[] newUsersArray = new User?[newSize];
+
+            for (int i = 0; i < _users.Length; i++)
+            {
+                newUsersArray[i] = _users[i];
+            }
+
+            _users = newUsersArray;
+
+            return _users.Length - 1;
         }
 
         public static bool Login(string username, string password)
