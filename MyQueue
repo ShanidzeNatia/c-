@@ -1,9 +1,11 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 
-
-     internal class Program
+namespace G11_20250409
+{
+    internal class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
             //Queue queue = new Queue();
             //queue.Enqueue("Rati");
@@ -29,44 +31,91 @@ using System;
             //    Console.WriteLine(stack.Pop());
             //}
 
+            //MyStack stack = new MyStack();
+            //stack.Push("Rati");
+            //stack.Push("Ana");
+            //stack.Push("Nuca");
+            //stack.Push("Keti");
+
+            //Console.WriteLine("Peek:");
+            //Console.WriteLine($"{stack.Peek()}\n");
+
+            //Console.WriteLine("Stack elements:");
+            //while (stack.Count > 0)
+            //{
+            //    Console.WriteLine(stack.Pop());
+            //}
+
             MyQueue queue = new MyQueue();
             queue.Enqueue("Rati");
             queue.Enqueue("Ana");
             queue.Enqueue("Nuca");
             queue.Enqueue("Keti");
 
-            Console.WriteLine("Queue elements:");
-            
+            Console.WriteLine("Peek:");
+            Console.WriteLine($"{queue.Peek()}\n");
+
+            Console.WriteLine("Stack elements:");
             while (queue.Count > 0)
             {
-                Console.WriteLine(queue.Count);
                 Console.WriteLine(queue.Dequeue());
             }
+
+            //MyQueue queue = new MyQueue();
+            //queue.Enqueue("A");
+            //queue.Enqueue("B");
+            //queue.Enqueue("C");
+
+            //Console.WriteLine(queue.Peek());   // "A"
+            //Console.WriteLine(queue.Dequeue()); // "A"
+            //Console.WriteLine(queue.Dequeue()); // "B"
+
+            //queue.Enqueue("D");
+            //queue.Enqueue("E");
+            //Console.WriteLine(queue.Peek());   // "C"
+            //Console.WriteLine(queue.Dequeue()); // "C"
+            //Console.WriteLine(queue.Peek());   // "D"
         }
     }
 
     class MyStack
     {
+        private object[] _items;
+
+        public MyStack()
+        {
+            _items = new object[0];
+        }
+
         public void Push(object item)
         {
-            throw new NotImplementedException();
+            //todo: Replace with own implementation
+            Array.Resize(ref _items, _items.Length + 1);
+            _items[_items.Length - 1] = item;
         }
 
         public object Pop()
         {
-            throw new NotImplementedException();
+            object item = Peek();
+            //todo: Replace with own implementation
+            Array.Resize(ref _items, _items.Length - 1);
+            return item;
         }
 
         public object Peek()
         {
-            throw new NotImplementedException();
+            if (_items.Length == 0)
+            {
+                throw new InvalidOperationException("Stack is empty");
+            }
+            return _items[_items.Length - 1];
         }
 
         public int Count
         {
             get
             {
-                throw new NotImplementedException();
+                return _items.Length;
             }
         }
     }
@@ -77,23 +126,21 @@ using System;
 
         public void Enqueue(object item)
         {
-            
-                MyArray.Resize(ref _items, _items.Length + 1);
+            MyArray.Resize(ref _items, _items.Length + 1);
             _items[_items.Length - 1] = item;
         }
 
         public object Dequeue()
         {
             object item = Peek();
-            object[] newArray = new object[0];
-            int count = 1;
-            for(int i=0; i>_items.Length - 1; i++){
-                newArray[i] = _items[count];
-                count++;
-                Console.WriteLine(newArray[i]);
+            object[] newArray = new object[_items.Length - 1];
+
+            for (int i = 1; i < _items.Length; i++)
+            {
+                newArray[i - 1] = _items[i];
             }
-            MyArray.Resize(ref newArray, _items.Length - 1);
-            
+            _items = newArray;
+
             return item;
         }
 
@@ -128,3 +175,4 @@ using System;
             array = newArray;
         }
     }
+}
