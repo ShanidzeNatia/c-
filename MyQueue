@@ -1,0 +1,130 @@
+using System;
+
+
+     internal class Program
+    {
+        static void Main()
+        {
+            //Queue queue = new Queue();
+            //queue.Enqueue("Rati");
+            //queue.Enqueue("Ana");
+            //queue.Enqueue("Nuca");
+            //queue.Enqueue("Keti");
+
+            //Console.WriteLine("Stack elements:");
+            //while (queue.Count > 0)
+            //{
+            //    Console.WriteLine(queue.Dequeue());
+            //}
+
+            //Stack stack = new Stack();
+            //stack.Push("Rati");
+            //stack.Push("Ana");
+            //stack.Push("Nuca");
+            //stack.Push("Keti");
+
+            //Console.WriteLine("Stack elements:");
+            //while (stack.Count > 0)
+            //{
+            //    Console.WriteLine(stack.Pop());
+            //}
+
+            MyQueue queue = new MyQueue();
+            queue.Enqueue("Rati");
+            queue.Enqueue("Ana");
+            queue.Enqueue("Nuca");
+            queue.Enqueue("Keti");
+
+            Console.WriteLine("Queue elements:");
+            
+            while (queue.Count > 0)
+            {
+                Console.WriteLine(queue.Count);
+                Console.WriteLine(queue.Dequeue());
+            }
+        }
+    }
+
+    class MyStack
+    {
+        public void Push(object item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Pop()
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Peek()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Count
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+    }
+
+    class MyQueue
+    {
+        private object[] _items = new object[0];
+
+        public void Enqueue(object item)
+        {
+            
+                MyArray.Resize(ref _items, _items.Length + 1);
+            _items[_items.Length - 1] = item;
+        }
+
+        public object Dequeue()
+        {
+            object item = Peek();
+            object[] newArray = new object[0];
+            int count = 1;
+            for(int i=0; i>_items.Length - 1; i++){
+                newArray[i] = _items[count];
+                count++;
+                Console.WriteLine(newArray[i]);
+            }
+            MyArray.Resize(ref newArray, _items.Length - 1);
+            
+            return item;
+        }
+
+        public object Peek()
+        {
+            if (_items.Length == 0)
+            {
+                throw new InvalidOperationException("MyQueue is empty");
+            }
+            return _items[0];
+        }
+
+        public int Count
+        {
+            get
+            {
+                return _items.Length;
+            }
+        }
+    }
+
+    static class MyArray
+    {
+        public static void Resize(ref object[] array, int newSize)
+        {
+            object[] newArray = new object[newSize];
+            int length = array.Length < newSize ? array.Length : newSize;
+            for (int i = 0; i < length; i++)
+            {
+                newArray[i] = array[i];
+            }
+            array = newArray;
+        }
+    }
